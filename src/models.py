@@ -57,6 +57,7 @@ class Province(db.Model):
 
     county=db.relationship('County', backref='province', single_parent=True, cascade="all, delete-orphan", remote_side=[CO_LICNO], foreign_keys='COUNTY.CO_LICNO')
     hospital=db.relationship('Hospital', backref='province', single_parent=True, cascade="all, delete-orphan", remote_side=[H_LICNO], foreign_keys='HOSPITAL.H_LICNO')
+    worker=db.relationship('Workers', backref='province', single_parent=True, cascade="all, delete-orphan", remote_side=[W_LICNO], foreign_keys='WORKERS.W_LICNO')
 
 class County(db.Model):
     __tablename__ = "COUNTY"
@@ -68,14 +69,29 @@ class County(db.Model):
     CO_XCOUNT= db.Column(db.Integer)
 
     hospital=db.relationship('Hospital', backref='county', single_parent=True, cascade="all, delete-orphan", remote_side=[H_ZIPCODE], foreign_keys='HOSPITAL.H_ZIPCODE')
+    worker=db.relationship('Workers', backref='county', single_parent=True, cascade="all, delete-orphan", remote_side=[W_ZIPCODE], foreign_keys='WORKERS.W_ZIPCODE')
 
 
 class Hospital(db.Model):
     __tablename__ = "HOSPITAL"
-    H_NUMBER= db.Column(db.Integer, primary_key=True, unique=True, autoincrement=True)
-    H_LICNO= db.Column(db.Integer, db.ForeignKey("PROVINCE.P_LICNO"), primary_key=True)
-    H_ZIPCODE= db.Column(db.Integer, db.ForeignKey("COUNTY.CO_ZIPCODE"), primary_key=True)
-    H_NAME= db.Column(db.String(20))
-    H_PATCOUNT= db.Column(db.Integer)
-    H_DOCCOUNT= db.Column(db.Integer)
-    H_XCOUNT= db.Column(db.Integer)
+    H_NUMBER = db.Column(db.Integer, primary_key=True, unique=True, autoincrement=True)
+    H_LICNO = db.Column(db.Integer, db.ForeignKey("PROVINCE.P_LICNO"), primary_key=True)
+    H_ZIPCODE = db.Column(db.Integer, db.ForeignKey("COUNTY.CO_ZIPCODE"), primary_key=True)
+    H_NAME = db.Column(db.String(20))
+    H_PATCOUNT = db.Column(db.Integer)
+    H_DOCCOUNT = db.Column(db.Integer)
+    H_XCOUNT = db.Column(db.Integer)
+
+    worker=db.relationship('Workers', backref='county', single_parent=True, cascade="all, delete-orphan", remote_side=[W_HOSPITAL], foreign_keys='WORKERS.W_HOSPITAL')
+
+class Workers(db.Model):
+    __tablename__ = "Workers"
+    W_TCKN = db.Column(db.Integer, primary_key=True)
+    W_LICNO = db.Column(db.Integer, db.ForeignKey("PROVINCE.P_LICNO"))
+    W_HOSPITAL = db.Column(db.Integer, db.ForeignKey("HOSPITAL.H_NUMBER"))
+    W_PASSWORD = db.Column(db.String(20))
+    W_FNAME = db.Column(db.String(20))
+    W_LNAME = db.Column(db.String(20))
+    W_PHONE = db.Column(db.Integer)
+    W_ZIPCODE = db.Column(db.Integer, db.ForeignKey("COUNTY.CO_ZIPCODE"))
+    W_STATUS = db.Column(db.Integer)#0 for admin, 1 for doctor, 2 for nurse
