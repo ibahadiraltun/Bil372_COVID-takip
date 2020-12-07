@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="column is-4 is-offset-4">
+    <h3 class="title">Hastane Bilgileri</h3>
+    <div class="box">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="notification is-danger">
+                {{ messages[0] }}
+        {% endif %}
+        {% endwith %}
+        <form action="/hospitals" method="POST">
+
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="hastaneno" placeholder="Hastane Numarası" autofocus="" required>
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="plakano" placeholder="İl Plaka Numarası" required>
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="ilismi" placeholder="İl Adı" required>
+                </div>
+            </div>
+            
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="postakodu" placeholder="İlçe Posta Kodu" required>
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="ilceismi" placeholder="İlçe Adı" required>
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="isim" placeholder="Hastane Adı" required>
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="number" name="hastasayisi" placeholder="Şu Anki Hasta Sayısı" required>
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="number" name="doktorsayisi" placeholder="Şu Anki Doktor Sayısı" required>
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="number" name="olusayisi" placeholder="Şu Anki Ölü Sayısı" required>
+                </div>
+            </div>
+
+            <button class="button is-block is-info is-large is-fullwidth">Yeni Hastane Ekle</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
