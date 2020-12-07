@@ -1,13 +1,9 @@
 
-<style>
- 
- td {
-        width: 150px;
-        text-align: center;
-        border: 1px solid black;
-        padding: 5px;
-      }
-</style>
+<head>
+    <link href="static/css/table.css" rel="stylesheet">
+
+</head>
+{% extends "base.html" %}
 {% block content %}
 <table>
     <thead>
@@ -17,24 +13,26 @@
             <th>Doktor Sayısı</th>
             <th>Hasta Sayısı</th>
             <th>Ölüm Sayısı</th>
+            <th></th>
         </tr>
     </thead>    
     <tbody>
     {% for row in data %}    
-            <tr>
-                <td>{{row.isim}}</td>
-                <td>{{row.plakano}}</td>
-                
-                <td>{{row.doktorsayisi}}</td>
-                 <td>{{row.hastasayisi}}</td>
-                  <td>{{row.olusayisi}}</td>
-                <td><form action="{{ url_for('tables.show') }}" method="POST">
-                    <input id="plaka" name="plaka" type="hidden" value="{{row.plakano}}">
-                    <button type="submit"> Detay </button>
-                </form></td>
-            </tr>
-        {% endfor %}
+        <tr >
+            <td>{{row.isim}}</td>
+            <td>{{row.plakano}}</td>
+            <td>{{row.doktorsayisi}}</td>
+            <td>{{row.hastasayisi}}</td>
+            <td>{{row.olusayisi}}</td>
+            <td><form action="{{ url_for('tables.show') }}" method="POST">
+                <input id="plaka" name="plaka" type="hidden" value="{{row.plakano}}">
+                <button type="submit"> Detay </button>
+            </form></td>
+        </tr>
+    {% endfor %}
     </tbody>
 </table>
-
 {% endblock %}
+
+
+

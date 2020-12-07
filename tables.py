@@ -15,7 +15,7 @@ def show():
     if request.form.get("plaka"):
         print('plaka: ', request.form.get('plaka'))
         return redirect(url_for('tables.show2',plaka_no = str(request.form.get("plaka"))))
-    il = Il.query.all()
+    il = Il.query.order_by(Il.plakano).all()
     il2 = Il.query.filter_by(plakano=6).first()
     list =[il,il2]
     user = Users.query
@@ -33,7 +33,7 @@ def show2():
         print('plaka: ', request.form.get('plaka'))
         return redirect(url_for('tables.show3',posta_kodu=request.form.get("plaka")))
     plaka_no = request.args.get('plaka_no')
-    ilce = Ilce.query.filter_by(plakano=plaka_no).all()
+    ilce = Ilce.query.filter_by(plakano=plaka_no).order_by(Ilce.postakodu).all()
     il2 = Ilce.query.filter_by(plakano=6).first()
     list =[ilce,il2]
     user = Users.query
@@ -50,7 +50,7 @@ def show3():
     if request.form.get("plaka"):
         print('plaka: ', request.form.get('plaka'))
     posta_kodu = request.args.get('posta_kodu')
-    hastane = Hastane.query.filter_by(postakodu=posta_kodu).all()
+    hastane = Hastane.query.filter_by(postakodu=posta_kodu).order_by(Hastane.isim).all()
     il2 = Ilce.query.filter_by(plakano=6).first()
     user = Users.query
     #print("aaa"+str(il.isim)+str(user))

@@ -1,13 +1,8 @@
-
-<style>
- 
- td {
-        width: 150px;
-        text-align: center;
-        border: 1px solid black;
-        padding: 5px;
-      }
-</style>
+<head>
+    <link href="static/css/table.css" rel="stylesheet">
+    
+</head>
+{% extends "base.html" %}
 {% block content %}
 <table>
     <thead>
@@ -17,6 +12,7 @@
             <th>Doktor Sayısı</th>
             <th>Hasta Sayısı</th>
             <th>Ölüm Sayısı</th>
+            <th></th>
         </tr>
     </thead>    
     <tbody>
@@ -24,10 +20,9 @@
             <tr>
                 <td>{{row.isim}}</td>
                 <td>{{row.postakodu}}</td>
-                
                 <td>{{row.doktorsayisi}}</td>
-                 <td>{{row.hastasayisi}}</td>
-                  <td>{{row.olusayisi}}</td>
+                <td>{{row.hastasayisi}}</td>
+                <td>{{row.olusayisi}}</td>
                 <td><form action="{{ url_for('tables.show2') }}" method="POST">
                     <input id="plaka" name="plaka" type="hidden" value="{{row.postakodu}}">
                     <button type="submit"> Detay </button>
@@ -36,5 +31,4 @@
         {% endfor %}
     </tbody>
 </table>
-
 {% endblock %}
