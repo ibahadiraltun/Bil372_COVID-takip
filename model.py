@@ -3,6 +3,23 @@ from sqlalchemy import String
 
 from __init__ import db
 
+from sqlalchemy.ext.mutable import Mutable
+from sqlalchemy.dialects.postgresql import ARRAY
+
+class MutableList(Mutable, list):
+    def append(self, value):
+        list.append(self, value)
+        self.changed()
+
+    @classmethod
+    def coerce(cls, key, value):
+        if not isinstance(value, MutableList):
+            if isinstance(value, list):
+                return MutableList(value)
+            return Mutable.coerce(key, value)
+        else:
+            return value
+
 
 class Users(UserMixin, db.Model):
     __tablename__ = 'users'
@@ -116,7 +133,7 @@ class OlasiVakalar(db.Model):
     testdurumu = db.Column(db.SMALLINT)
     yas = db.Column(db.SMALLINT)
     cinsiyet = db.Column(db.String(20))
-    kronikhastalik = db.Column(db.BOOLEAN)
+    kronikhastalık = db.Column(db.BOOLEAN)
 
     def __init__(self, tckn,ad,soyad,telno,evadresi,isadresi,testtarihi,testdurumu,yas,cinsiyet,kronikhastalik):
         self.tckn = tckn
@@ -129,12 +146,12 @@ class OlasiVakalar(db.Model):
         self.testdurumu = testdurumu
         self.yas = yas
         self.cinsiyet = cinsiyet
-        self.kronikhastalik = kronikhastalik
+        self.kronikhastalık = kronikhastalik
 
 class Vakalar(db.Model):
     __tablename__ = 'vakalar'
     tckn = db.Column(db.Integer, db.ForeignKey(OlasiVakalar.tckn) , primary_key=True)
-    ilaclistesi = db.Column(db.ARRAY(String))
+    ilaclistesi = db.Column(MutableList.as_mutable(ARRAY(db.String(100))))
 
     def __init__(self, tckn,ilaclistesi):
         self.tckn = tckn
