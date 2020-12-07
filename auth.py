@@ -46,7 +46,12 @@ def signup_post():
     soyad = request.form.get('soyad')
     telno = request.form.get('telno')
     pkodu = request.form.get('pkodu')
+    hemsire = request.form.get('hemsire')
+    doktor = request.form.get('doktor')
 
+    if doktor == '1' and hemsire == '2':
+        flash("İkisini birden seçemezsiniz")
+        return redirect(url_for('auth.signup'))
 
     user = Users.query.filter_by(username=tckn).first()
 
@@ -60,9 +65,17 @@ def signup_post():
         maxID = 1
 
     new_user = Users(authenticationid=maxID, username=tckn,
-                     password=generate_password_hash(password, method='sha256'), tür=1)
-    new_calisan = Calisanlar(tckn=tckn, password=password, plakano=plakano,
-                              hastaneno=hastaneno, ad=ad, soyad=soyad, telno=telno, postakodu=pkodu)
+                     password=generate_password_hash(password, method='sha256'))
+
+    new_calisan= ""
+    if doktor == '1':
+        new_calisan = Calisanlar(tckn=tckn, password=password, plakano=plakano,
+                              hastaneno=hastaneno, ad=ad, soyad=soyad, telno=telno, postakodu=pkodu, tur=1)
+    elif hemsire == '2':
+        new_calisan = Calisanlar(tckn=tckn, password=password, plakano=plakano,
+                                 hastaneno=hastaneno, ad=ad, soyad=soyad, telno=telno, postakodu=pkodu, tur=2)
+    else:
+        flash("Doktor veya hemşire olmalısınız.")
 
     db.session.add(new_user)
     db.session.commit()
