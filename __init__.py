@@ -10,8 +10,8 @@ def create_app():
 
     app.config['SECRET_KEY'] = 'thisismysecretkeydonotstealit'
     # add your password
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:1042@localhost/coviddb'
-
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:bil372@localhost:5432/proj'
+    app.config['DEBUG'] = True
     db.init_app(app)
 
     login_manager = LoginManager()
@@ -29,5 +29,6 @@ def create_app():
 
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
-
+    from .tables import tables as tables_blueprint
+    app.register_blueprint(tables_blueprint)
     return app
