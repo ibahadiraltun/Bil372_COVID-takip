@@ -3,6 +3,23 @@ from sqlalchemy import String
 
 from __init__ import db
 
+from sqlalchemy.ext.mutable import Mutable
+from sqlalchemy.dialects.postgresql import ARRAY
+
+class MutableList(Mutable, list):
+    def append(self, value):
+        list.append(self, value)
+        self.changed()
+
+    @classmethod
+    def coerce(cls, key, value):
+        if not isinstance(value, MutableList):
+            if isinstance(value, list):
+                return MutableList(value)
+            return Mutable.coerce(key, value)
+        else:
+            return value
+
 
 class Users(UserMixin, db.Model):
     __tablename__ = 'users'
@@ -129,13 +146,14 @@ class OlasiVakalar(db.Model):
         self.testdurumu = testdurumu
         self.yas = yas
         self.cinsiyet = cinsiyet
+
         self.kronikhastalik = kronikhastalik
 
 class Vakalar(db.Model):
     __tablename__ = 'vakalar'
     tckn = db.Column(db.Integer,db.ForeignKey(
         OlasiVakalar.tckn) , primary_key=True)
-    ilaclistesi = db.Column(db.ARRAY(String, dimensions=3))
+    ilaclistesi = db.Column(MutableList.as_mutable(ARRAY(db.String(100))))
 
     def __init__(self, tckn,ilaclistesi):
         self.tckn = tckn
@@ -163,10 +181,8 @@ class Temas(db.Model):
 
 class Temaslilar(db.Model):
     __tablename__ = 'temaslılar'
-    temaslitckn = db.Column(db.String(13),db.ForeignKey(
-        Temas.temaslitckn) , primary_key=True)
-    tckn = db.Column(db.String(13), db.ForeignKey(
-        Vakalar.tckn),primary_key=True)
+    temaslitckn = db.Column(db.String(13),db.ForeignKey(Temas.temaslitckn) , primary_key=True)
+    tckn = db.Column(db.String(13), db.ForeignKey(Vakalar.tckn),primary_key=True)
     temasyeri = db.Column(db.String(50))
     temastarihi = db.Column(db.DateTime)
     temasliisim = db.Column(db.String(50))
@@ -182,6 +198,19 @@ class Temaslilar(db.Model):
         self.temasliisim = temasliisim
         self.temaslisoyisim = temaslisoyisim
 
+
+class IlacListesi(db.Model):
+    __tablename__ = 'ilaçlistesi'
+    tckn = db.Column(db.String(13), db.ForeignKey(Vakalar.tckn),primary_key=True)
+    vakaisim = db.Column(db.String(50))
+    vakasoyisim = db.Column(db.String(50))
+    ilacadi = db.Column(db.String(50))
+
+    def __init__(self, tckn , fname, lname, medicinename):
+        self.tckn = tckn
+        self.vakaisim = fname
+        self.vakasoyisim = lname
+        self.ilacadi = medicinename
 
 
 

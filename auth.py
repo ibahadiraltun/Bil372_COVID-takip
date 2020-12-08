@@ -88,3 +88,33 @@ def signup_post():
 def logout():
     logout_user()
     return redirect(url_for('main.index'))
+
+@auth.route('/medicinelists')
+@login_required
+def medicinelists():
+    result=db.session.execute("SELECT * FROM ilaçlistesi")
+    data = result.fetchall()
+    return render_template('medicinelists.html', data=data)
+
+@auth.route('/medicinelists', methods=['POST'])
+@login_required
+def medicinelists_post():
+    tckn = request.form.get('tckn')
+    isim = request.form.get('vakaisim')
+    soyisim = request.form.get('vakasoyisim')
+
+    vaka = Vakalar.query.filter_by(tckn=tckn).first()
+
+    if not vaka:
+        flash('Bu TC Kimlik Numarasına sahip bir vaka yok, ilaç listesi oluşturulamaz.')
+        return redirect(url_for('auth.medicinelists'))
+
+    ilaclar= vaka.ilaclistesi
+    
+    for i in range (0, len(ilaclar)):
+        ilac= IlacListesi(tckn, isim, soyisim, ilaclar[i])
+        db.session.add(ilac)
+    
+    db.session.commit()
+
+    return redirect(url_for('auth.medicinelists'))
