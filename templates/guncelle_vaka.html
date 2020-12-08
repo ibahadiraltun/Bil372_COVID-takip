@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+    <div class="notification is-success">
+        {{ messages[0] }}
+    </div>
+{% endif %}
+{% endwith %}
+<div style="display:flex;">
+
+        <div style="width: 50%;">
+            <h3 style="color: rgb(202, 54, 8);">Vaka İyileşti</h3>
+            <ul class="list-group">
+        {% for v in vaka %}
+        <a href="{{ url_for('main.guncelle_vaka2',tckn=v['tckn'], durum=1)}}">
+            <li class="list-group-item list-group-item-action list-group-item-success">
+               TCKN :  {{  v['tckn']  }}
+            </li>
+        </a>
+        {% endfor %}
+            </ul>
+        </div>
+
+
+        <div style="flex-grow: 1;">
+            <h3 style="color: rgb(202, 54, 8);">Vaka Vefat</h3>
+            <ul class="list-group">
+        {% for v in vaka %}
+        <a href="{{ url_for('main.guncelle_vaka2',tckn=v['tckn'], durum=-1)}}">
+            <li class="list-group-item list-group-item-action list-group-item-danger">
+               TCKN :  {{  v['tckn']  }}
+            </li>
+
+            
+
+        </a>
+    </ul>
+        {% endfor %}
+        </div>
+
+    
+</div>
+{% endblock %}

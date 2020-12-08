@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+    <div class="notification is-success">
+        {{ messages[0] }}
+    </div>
+{% endif %}
+{% endwith %}
+<div style="display:flex;">
+
+        <div style="width: 50%;">
+            <h3 style="color: rgb(202, 54, 8);">Vaka Bilgisi</h3>
+        {% if vaka != [None] %}
+            <ul class="list-group">
+        {% for v in vaka %}
+            <li class="list-group-item list-group-item-primary">
+               TCKN :  {{  v['tckn']  }}
+
+            </li>
+        </a>
+        {% endfor %}
+
+            </ul>
+        {% endif %}
+        </div>
+</div>
+
+    <div class="column is-4 is-offset-4">
+    <h3 class="title">Temaslı Ekle  </h3>
+    <div class="box">
+
+        <form action="/temasli/ekle" method="POST">
+
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="tckn" placeholder="Vaka TCKN" autofocus="" required>
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="ttckn" placeholder="Temaslı TCKN" required>
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="tad" placeholder="Temaslı Ad" required>
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="tsoyad" placeholder="Temaslı Soyad" required>
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="ttno" placeholder="Temaslı Telefon" required>
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="tev" placeholder="Temaslı Ev Adresi" required>
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="tis" placeholder="Temaslı İş Adresi" required>
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="ttarih" placeholder="Temas Tarihi" required>
+                </div>
+            </div>
+            <div class="field">
+
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="text" name="tyer" placeholder="Temas Yeri" required>
+                </div>
+            </div>
+            <div class="field">
+
+
+            </div>
+            <button class="button is-block is-info is-large is-fullwidth">Ekle</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
