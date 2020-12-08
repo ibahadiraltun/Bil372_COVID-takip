@@ -28,6 +28,13 @@ def olasi_vakalar():
 
     return render_template('olasi_vakalar.html', cases = possible_cases)
 
+@main.route('/delete_olasi_vaka/<tckn>', methods=['POST', 'GET'])
+def delete_olasi_vaka(tckn):
+    possible_case = db.session.query(OlasiVakalar).filter_by(tckn = tckn).first()
+    db.session.delete(possible_case)
+    db.session.commit()
+    return redirect(url_for('main.olasi_vakalar'))
+
 @main.route('/yeni_olasi_vaka', methods=['POST', 'GET'])
 def yeni_olasi_vaka():
     if request.method == 'POST':

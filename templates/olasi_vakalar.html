@@ -29,7 +29,7 @@
                 <td>{{case.kronikhastalik}}</td>
                 <td>
                     <a class="btn btn-outline-primary" > Update</a>
-                    <a class="btn btn-outline-danger" > Delete</a>
+                    <a href="{{url_for('main.delete_olasi_vaka', tckn=case.tckn)}}" class="btn btn-outline-danger" > Delete</a>
                 </td> 
             </tr>
         {%endfor%}
