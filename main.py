@@ -155,17 +155,17 @@ def deletehospitals_delete():
         flash('Böyle bir hastane yok, silinemez.')
         return redirect(url_for('main.deletehospitals'))
     else:
-        db.session.remove(hastane)
+        db.session.delete(hastane)
         il.hastasayisi= il.hastasayisi-int(hastane.hastasayisi)
         il.doktorsayisi= il.doktorsayisi-int(hastane.doktorsayisi)
-        il.olusayisi= il.olusayisi-int(hastane.olusayisi)
+        il.olusayisi= il.olusayisi-int(hastane.olumsayisi)
 
         ilce.hastasayisi= ilce.hastasayisi-int(hastane.hastasayisi)
         il.doktorsayisi= ilce.doktorsayisi-int(hastane.doktorsayisi)
-        il.olusayisi= ilce.olusayisi-int(hastane.olusayisi)
+        il.olusayisi= ilce.olusayisi-int(hastane.olumsayisi)
 
         for x in calisanlar:
-            db.session.remove(x)
+            db.session.remove(self, x)
 
     db.session.commit()
 
