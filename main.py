@@ -38,8 +38,10 @@ def medicinelists_post():
     if olasivaka.ad != isim or olasivaka.soyad != soyisim:
         flash('Bu TC Kimlik Numarasına sahip vakanın ismi veya soyismi yanlış girildi.')
         return redirect(url_for('main.medicinelists'))
-
-    vaka.ilaclistesi.append(ilac)
+    if(vaka.ilaclistesi==None):
+        vaka.ilaclistesi=[ilac]
+    else:
+        vaka.ilaclistesi.append(ilac)
     print(vaka.ilaclistesi)
     
     db.session.commit()
