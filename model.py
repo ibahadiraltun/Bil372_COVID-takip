@@ -153,10 +153,12 @@ class Vakalar(db.Model):
     __tablename__ = 'vakalar'
     tckn = db.Column(db.Integer,db.ForeignKey(
         OlasiVakalar.tckn) , primary_key=True)
-    ilaclistesi = db.Column(MutableList.as_mutable(ARRAY(db.String(100))))
+    durum = db.Column(db.Integer)
+    ilaclistesi = db.Column(db.ARRAY(String, dimensions=3))
 
-    def __init__(self, tckn,ilaclistesi):
+    def __init__(self, tckn,durum,ilaclistesi):
         self.tckn = tckn
+        self.durum = durum
         self.ilaclistesi = ilaclistesi
 
 
