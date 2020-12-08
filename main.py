@@ -50,6 +50,39 @@ def medicinelists_post():
 
     return redirect(url_for('main.medicinelists'))
 
+@main.route('/deletemedicinelists')
+@login_required
+def deletemedicinelists():
+    return render_template('deletemedicinelists.html')
+
+@main.route('/deletemedicinelists', methods=['POST'])
+@login_required
+def deletemedicinelists_delete():
+    tckn = request.form.get('tckn')
+    isim = request.form.get('vakaisim')
+    soyisim = request.form.get('vakasoyisim')
+    ilac = request.form.get('vakailacı')
+
+    vaka = Vakalar.query.filter_by(tckn=tckn).first()
+    olasivaka=OlasiVakalar.query.filter_by(tckn=tckn).first()
+
+    if not vaka:
+        flash('Bu TC Kimlik Numarasına sahip bir vaka yok, ilaç silinemez.')
+        return redirect(url_for('main.deletemedicinelists'))
+    if olasivaka.ad != isim or olasivaka.soyad != soyisim:
+        flash('Bu TC Kimlik Numarasına sahip vakanın ismi veya soyismi yanlış girildi.')
+        return redirect(url_for('main.deletemedicinelists'))
+    if(vaka.ilaclistesi==None):
+        flash('Bu TC Kimlik Numarasına sahip vakanın bu ilacı bulunamadı.')
+        return redirect(url_for('main.deletemedicinelists'))
+    else:
+        vaka.ilaclistesi.remove(ilac)
+    print(vaka.ilaclistesi)
+    
+    db.session.commit()
+
+    return redirect(url_for('main.deletemedicinelists'))
+
 
 @main.route('/hospitals')
 @login_required
@@ -102,6 +135,45 @@ def hospitals_post():
         db.session.commit()
 
     return redirect(url_for('main.hospitals'))
+
+@main.route('/deletehospitals')
+@login_required
+def deletehospitals():
+    return render_template('deletehospitals.html')
+
+@main.route('/deletehospitals', methods=['POST'])
+@login_required
+def deletehospitals_delete():
+    hastaneno = request.form.get('hastaneno')
+    ilplakano = request.form.get('plakano')
+    ilcepostakodu = request.form.get('postakodu')
+
+    hastane=Hastane.query.filter_by(hastaneno = hastaneno, plakano=ilplakano, postakodu=ilcepostakodu).first()
+    il=Il.query.filter_by(plakano=ilplakano).first()
+    ilce=Ilce.query.filter_by(plakano=ilplakano, postakodu=ilcepostakodu).first()
+    calisanlar= Calisanlar.query.filter_by(plakano=ilplakano, hastaneno=hastane.hastaneno).all()
+
+    if not hastane:
+        flash('Böyle bir hastane yok, silinemez.')
+        return redirect(url_for('main.deletehospitals'))
+    else:
+        db.session.delete(hastane)
+        il.hastasayisi= il.hastasayisi-int(hastane.hastasayisi)
+        il.doktorsayisi= il.doktorsayisi-int(hastane.doktorsayisi)
+        il.olusayisi= il.olusayisi-int(hastane.olumsayisi)
+
+        ilce.hastasayisi= ilce.hastasayisi-int(hastane.hastasayisi)
+        il.doktorsayisi= ilce.doktorsayisi-int(hastane.doktorsayisi)
+        il.olusayisi= ilce.olusayisi-int(hastane.olumsayisi)
+
+        for x in calisanlar:
+            db.session.remove(self, x)
+
+    db.session.commit()
+
+    return redirect(url_for('main.deletehospitals'))
+
+
 def get_possible_cases():
     cases = OlasiVakalar.query.filter_by(testdurumu = 0).all()
     return cases
@@ -340,3 +412,12 @@ def ekle_temasli_post():
 
 
     return redirect(url_for('main.ekle_temasli'))
+
+@main.route('/temasli/izle', methods=["GET"])
+@login_required
+def izle_temasli():
+    temasli = db.session.query(Temaslilar).all()
+    print(temasli)
+
+
+    return render_template('izle_temasli.html', temas=temasli)
