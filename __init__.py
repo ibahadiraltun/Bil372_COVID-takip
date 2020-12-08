@@ -10,8 +10,9 @@ def create_app():
 
     app.config['SECRET_KEY'] = 'thisismysecretkeydonotstealit'
     # add your password
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:bil372@localhost:5432/proj'
-    app.config['DEBUG'] = True
+
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://ibahadiraltun:@localhost/bil372-project'
+
     db.init_app(app)
 
     login_manager = LoginManager()
