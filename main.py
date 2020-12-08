@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash
+from flask import Blueprint, render_template, redirect, url_for, request, flash, session
 from flask_login import login_required, current_user, logout_user
 from .model import *
 from __init__ import db
@@ -24,6 +24,8 @@ def medicinelists():
 @main.route('/medicinelists', methods=['POST'])
 @login_required
 def medicinelists_post():
+    if session['type'] != 1:
+        return redirect(url_for('main.medicinelists'))
     tckn = request.form.get('tckn')
     isim = request.form.get('vakaisim')
     soyisim = request.form.get('vakasoyisim')
@@ -111,6 +113,8 @@ def olasi_vakalar():
 
 @main.route('/delete_olasi_vaka/<tckn>', methods=['POST', 'GET'])
 def delete_olasi_vaka(tckn):
+    if session['type'] != 1:
+        return redirect(url_for('main.olasi_vakalar'))
     possible_case = db.session.query(OlasiVakalar).filter_by(tckn = tckn).first()
     db.session.delete(possible_case)
     db.session.commit()
@@ -119,6 +123,8 @@ def delete_olasi_vaka(tckn):
 @main.route('/update_olasi_vaka/<tckn>', methods=['POST', 'GET'])
 def update_olasi_vaka(tckn):
     if request.method == 'POST':
+        if session['type'] != 1:
+            return redirect(url_for('main.olasi_vakalar'))
         form = request.form
         values = form.to_dict(flat = True)
         existing_case = db.session.query(OlasiVakalar).filter_by(tckn = tckn).first()
@@ -143,6 +149,8 @@ def update_olasi_vaka(tckn):
 @main.route('/yeni_olasi_vaka', methods=['POST', 'GET'])
 def yeni_olasi_vaka():
     if request.method == 'POST':
+        if session['type'] != 1:
+            return redirect(url_for('main.olasi_vakalar'))
         form = request.form
         values = form.to_dict(flat = True)
         new_possible_case = OlasiVakalar(tckn = values['tckn'], ad = values['ad'], soyad = values['soyad'], 
@@ -170,7 +178,8 @@ def ekle_vaka():
 @main.route('/vaka/ekle/<ekle>', methods=["POST", "GET"])
 @login_required
 def ekle_vaka2(ekle):
-
+    if session['type'] != 1:
+        return redirect(url_for('main.ekle_vaka'))
     hasta = db.session.query(OlasiVakalar).filter(
         OlasiVakalar.tckn == ekle).one()
 
@@ -225,6 +234,8 @@ def guncelle_vaka():
 @main.route('/vaka/guncelle/<tckn>/<durum>', methods=["POST", "GET"])
 @login_required
 def guncelle_vaka2(tckn,durum):
+    if session['type'] != 1:
+        return redirect(url_for('main.guncelle_vaka'))
     tc = current_user.username
 
     calisan = db.session.query(Calisanlar).filter(
@@ -307,7 +318,8 @@ def ekle_temasli():
 @main.route('/temasli/ekle', methods=['POST'])
 @login_required
 def ekle_temasli_post():
-
+    if session['type'] != 1:
+        return redirect(url_for('main.ekle_temasli'))
     tckn = request.form.get('tckn')
     ttckn = request.form.get('ttckn')
     ad = request.form.get('tad')

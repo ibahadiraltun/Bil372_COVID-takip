@@ -16,7 +16,6 @@ def show():
         print('plaka: ', request.form.get('plaka'))
         return redirect(url_for('tables.show2',plaka_no = str(request.form.get("plaka"))))
     il = Il.query.order_by(Il.plakano).all()
-
     return render_template('tables.html', data=il)
 
 @tables.route('/tables2', methods=['GET', 'POST'])
