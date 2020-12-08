@@ -153,7 +153,7 @@ class Vakalar(db.Model):
     tckn = db.Column(db.Integer,db.ForeignKey(
         OlasiVakalar.tckn) , primary_key=True)
     durum = db.Column(db.Integer)
-    ilaclistesi = db.Column(db.ARRAY(String, dimensions=3))
+    ilaclistesi = db.Column(MutableList.as_mutable(ARRAY(db.String())))
 
     def __init__(self, tckn,durum,ilaclistesi):
         self.tckn = tckn
