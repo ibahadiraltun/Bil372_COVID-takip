@@ -133,7 +133,7 @@ class OlasiVakalar(db.Model):
     testdurumu = db.Column(db.SMALLINT)
     yas = db.Column(db.SMALLINT)
     cinsiyet = db.Column(db.String(20))
-    kronikhastalık = db.Column(db.BOOLEAN)
+    kronikhastalik = db.Column(db.BOOLEAN)
 
     def __init__(self, tckn,ad,soyad,telno,evadresi,isadresi,testtarihi,testdurumu,yas,cinsiyet,kronikhastalik):
         self.tckn = tckn
@@ -146,11 +146,13 @@ class OlasiVakalar(db.Model):
         self.testdurumu = testdurumu
         self.yas = yas
         self.cinsiyet = cinsiyet
-        self.kronikhastalık = kronikhastalik
+
+        self.kronikhastalik = kronikhastalik
 
 class Vakalar(db.Model):
     __tablename__ = 'vakalar'
-    tckn = db.Column(db.Integer, db.ForeignKey(OlasiVakalar.tckn) , primary_key=True)
+    tckn = db.Column(db.Integer,db.ForeignKey(
+        OlasiVakalar.tckn) , primary_key=True)
     ilaclistesi = db.Column(MutableList.as_mutable(ARRAY(db.String(100))))
 
     def __init__(self, tckn,ilaclistesi):
@@ -179,8 +181,7 @@ class Temas(db.Model):
 
 class Temaslilar(db.Model):
     __tablename__ = 'temaslılar'
-    temaslitckn = db.Column(db.String(13),db.ForeignKey(
-        Temas.temaslitckn) , primary_key=True)
+    temaslitckn = db.Column(db.String(13),db.ForeignKey(Temas.temaslitckn) , primary_key=True)
     tckn = db.Column(db.String(13), db.ForeignKey(Vakalar.tckn),primary_key=True)
     temasyeri = db.Column(db.String(50))
     temastarihi = db.Column(db.DateTime)
@@ -197,6 +198,7 @@ class Temaslilar(db.Model):
         self.temasliisim = temasliisim
         self.temaslisoyisim = temaslisoyisim
 
+
 class IlacListesi(db.Model):
     __tablename__ = 'ilaçlistesi'
     tckn = db.Column(db.String(13), db.ForeignKey(Vakalar.tckn),primary_key=True)
@@ -209,7 +211,6 @@ class IlacListesi(db.Model):
         self.vakaisim = fname
         self.vakasoyisim = lname
         self.ilacadi = medicinename
-
 
 
 

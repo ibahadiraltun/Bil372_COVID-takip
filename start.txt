@@ -1,2 +1,7 @@
 $env:FLASK_APP = "__init__.py"
 python -m flask run
+
+
+admin
+tc = 1234567890000
+şifre = 1234

@@ -3,7 +3,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, login_required
 from .model import *
 from __init__ import db
-from sqlalchemy import func
 from datetime import datetime
 import random
 
@@ -34,7 +33,6 @@ def login_post():
 @auth.route('/signup')
 def signup():
     return render_template('signup.html')
-
 
 @auth.route('/signup', methods=['POST'])
 def signup_post():
