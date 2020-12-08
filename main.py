@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, request, flash
 from flask_login import login_required, current_user, logout_user
 from .model import *
 from __init__ import db
-from datetime import datetime
+from datetime import date
 import uuid
 from werkzeug.security import generate_password_hash
 import random
@@ -144,8 +144,8 @@ def update_olasi_vaka(tckn):
         existing_case.testdurumu = int(values['testdurumu'])
         existing_case.yas = values['yas']
         existing_case.cinsiyet = values['cinsiyet']
-        if (values['kronikhastalık'] == '0'): existing_case.kronikhastalık = 0
-        else: existing_case.kronikhastalık = 1
+        if (values['kronikhastalik'] == '0'): existing_case.kronikhastalik = 0
+        else: existing_case.kronikhastalik = 1
         db.session.commit()
         return redirect(url_for('main.olasi_vakalar'))
 
@@ -160,7 +160,7 @@ def yeni_olasi_vaka():
         new_possible_case = OlasiVakalar(tckn = values['tckn'], ad = values['ad'], soyad = values['soyad'], 
                                         telno = values['telno'], evadresi = values['evadresi'], isadresi = values['isadresi'], 
                                         testtarihi = values['testtarihi'], testdurumu = int(values['testdurumu']),
-                                        yas = values['yas'], cinsiyet = values['cinsiyet'], kronikhastalık = bool(values['kronikhastalik']))
+                                        yas = values['yas'], cinsiyet = values['cinsiyet'], kronikhastalik = bool(values['kronikhastalik']))
         db.session.add(new_possible_case)
         db.session.commit()
         return redirect(url_for('main.olasi_vakalar'))

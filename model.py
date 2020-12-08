@@ -133,9 +133,9 @@ class OlasiVakalar(db.Model):
     testdurumu = db.Column(db.SMALLINT)
     yas = db.Column(db.SMALLINT)
     cinsiyet = db.Column(db.String(20))
-    kronikhastalık = db.Column(db.BOOLEAN)
+    kronikhastalik = db.Column(db.BOOLEAN)
 
-    def __init__(self, tckn,ad,soyad,telno,evadresi,isadresi,testtarihi,testdurumu,yas,cinsiyet,kronikhastalık):
+    def __init__(self, tckn,ad,soyad,telno,evadresi,isadresi,testtarihi,testdurumu,yas,cinsiyet,kronikhastalik):
         self.tckn = tckn
         self.ad = ad
         self.soyad = soyad
@@ -146,8 +146,7 @@ class OlasiVakalar(db.Model):
         self.testdurumu = testdurumu
         self.yas = yas
         self.cinsiyet = cinsiyet
-
-        self.kronikhastalık = kronikhastalık
+        self.kronikhastalik = kronikhastalik
 
 class Vakalar(db.Model):
     __tablename__ = 'vakalar'
