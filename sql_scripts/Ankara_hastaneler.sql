@@ -56,6 +56,6 @@
 (56,06,06100,'TOBB ETÜ Hastanesi',0,0,0),
 (57,06,06100,'Umut Hastanesi',0,0,0),
 (58,06,06100,'Yüzüncüyıl Hastanesi',0,0,0),
-(59,06,06100,'19 Mayıs Hastanesi',0,0,0);
+(59,06,06100,'19 Mayıs Hastanesi',0,0,0),
 (60,06,06145,'Ankara Pursaklar Devlet Hastanesi',0,0,0);
 select * from hastane;
