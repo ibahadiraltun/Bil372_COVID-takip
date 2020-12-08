@@ -11,6 +11,7 @@
         <th scope="col">TCKN</th>
         <th scope="col">AD</th>
         <th scope="col">SOYAD</th>
+        <th scope="col">TEST TARIHI</th>
         <th scope="col">TEST DURUMU</th>
         <th scope="col">YAS</th>
         <th scope="col">CINSIYET</th>
@@ -23,12 +24,13 @@
                 <th scope="row"> {{case.tckn}}</th>
                 <td>{{case.ad}}</td>
                 <td>{{case.soyad}}</td>
+                <td>{{case.testtarihi}}</td>
                 <td>{{case.testdurumu}}</td>
                 <td>{{case.yas}}</td>
                 <td>{{case.cinsiyet}}</td>
                 <td>{{case.kronikhastalik}}</td>
                 <td>
-                    <a class="btn btn-outline-primary" > Update</a>
+                    <a href="{{url_for('main.update_olasi_vaka', tckn=case.tckn)}}" class="btn btn-outline-primary" > Update</a>
                     <a href="{{url_for('main.delete_olasi_vaka', tckn=case.tckn)}}" class="btn btn-outline-danger" > Delete</a>
                 </td> 
             </tr>
