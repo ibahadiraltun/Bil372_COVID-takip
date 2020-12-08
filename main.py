@@ -58,6 +58,8 @@ def deletemedicinelists():
 @main.route('/deletemedicinelists', methods=['POST'])
 @login_required
 def deletemedicinelists_delete():
+    if session['type'] != 1:
+        return redirect(url_for('main.medicinelists'))
     tckn = request.form.get('tckn')
     isim = request.form.get('vakaisim')
     soyisim = request.form.get('vakasoyisim')
