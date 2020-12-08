@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block head %}
+
+<style>
+.error {
+    font-size:18px;
+    color:#cc0000; 
+    margin-top:30px
+}
+.form-group {
+    margin-bottom: 10px;
+}
+.conference-form {
+    width: 500px;
+    margin: 8px auto;
+    font-size: 15px;
+}
+.conference-form form {
+    margin-bottom: 10px;
+    background: #ffffff;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+}
+.conference-form h2 {
+    margin: 0 0 5 5px;
+}
+
+body{
+    background: #f7f7f7;
+}
+</style>
+{%endblock%}
+
+{% block content %}
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+
+<div class="conference-form">
+    <form action = "" method = "post" class="form-signin">
+        <h2 class="text-center">Olasi Vaka Guncelle</h2>       
+        <div class="form-group">
+            <input type="text" class="form-control" name="tckn" placeholder="TCKN" value="{{case.tckn}}" required="required" autofocus >
+        </div>
+
+        <div class="form-group">
+            <input type="text" class="form-control" name="ad" placeholder="AD" value="{{case.ad}}" required="required">
+        </div>
+
+        <div class="form-group">
+            <input type="text" class="form-control" name="soyad" placeholder="SOYAD" value="{{case.soyad}}" required="required" >
+        </div>
+
+        <div class="form-group">
+            <input type="text" class="form-control" name="telno" placeholder="TEL NO" value="{{case.telno}}" required="required" >
+        </div>
+
+        <div class="form-group">
+            <input type="text" class="form-control" name="evadresi" placeholder="EV ADRESI" value="{{case.evadresi}}" required="required" >
+        </div>
+
+        <div class="form-group">
+            <input type="text" class="form-control" name="isadresi" placeholder="IS ADRESI" value="{{case.isadresi}}" required="required" >
+        </div>
+
+        <div class="form-group">
+            <label style="font-size:15px;"> Test Tarihi  </label>
+            <input id="datepicker" type="date" data-date="" data-date-format="DD/MM/YYYY" class="form-control" name="testtarihi" placeholder="Test Tarihi" value="{{case.testtarihi}}" required="required" >
+        </div>
+        
+        <div class="form-group">
+            <input type="text" class="form-control" name="testdurumu" placeholder="TEST DURUMU" value="{{case.testdurumu}}" required="required" >
+        </div>
+
+        <div class="form-group">
+            <input type="number" class="form-control" name="yas" placeholder="YAS" value="{{case.yas}}" required="required" >
+        </div>
+
+        <div class="form-group">
+            <input type="text" class="form-control" name="cinsiyet" placeholder="CINSIYET" value="{{case.cinsiyet}}" required="required" >
+        </div>
+        
+        <div class="form-group">
+            {% if case.kronikhastalik == True %}
+                <input type="number" class="form-control" name="kronikhastalik" placeholder="KRONIK HASTALIK" value="1" required="required" >
+            {% else %}
+                <input type="number" class="form-control" name="kronikhastalik" placeholder="KRONIK HASTALIK" value="0" required="required" >
+            {% endif %}
+        </div>
+
+        <div>
+            <button type="submit" name="submit" class="btn btn-lg btn-primary btn-block"> DEGISTIR </button>
+        </div>
+            
+    </form>
+    
+</div>
+    
+
+{% endblock %}
