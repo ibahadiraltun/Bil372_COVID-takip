@@ -1,3 +1,8 @@
+before start
+connection string in __init__.py
+psql.exe -U postgres <database_name> < <project_path>\dumps\dump081220202307.sql
+
+
 $env:FLASK_APP = "__init__.py"
 python -m flask run
 
