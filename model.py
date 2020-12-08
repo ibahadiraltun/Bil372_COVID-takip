@@ -65,17 +65,17 @@ class Hastane(db.Model):
     isim = db.Column(db.String(50))
     hastasayisi = db.Column(db.Integer)
     doktorsayisi = db.Column(db.Integer)
-    olusayisi = db.Column(db.Integer)
+    olumsayisi = db.Column(db.Integer)
 
 
-    def __init__(self, hastaneno,plakano,postakodu,isim,hastasayisi,doktorsayisi,olusayisi):
+    def __init__(self, hastaneno,plakano,postakodu,isim,hastasayisi,doktorsayisi,olumsayisi):
         self.hastaneno = hastaneno
         self.plakano = plakano
         self.postakodu = postakodu
         self.isim = isim
         self.hastasayisi = hastasayisi
         self.doktorsayisi = doktorsayisi
-        self.olusayisi = olusayisi
+        self.olumsayisi = olumsayisi
 
 
 class Calisanlar(db.Model):
