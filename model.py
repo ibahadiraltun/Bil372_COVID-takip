@@ -133,9 +133,9 @@ class OlasiVakalar(db.Model):
     testdurumu = db.Column(db.SMALLINT)
     yas = db.Column(db.SMALLINT)
     cinsiyet = db.Column(db.String(20))
-    kronikhastalik = db.Column(db.BOOLEAN)
+    kronikhastalık = db.Column(db.BOOLEAN)
 
-    def __init__(self, tckn,ad,soyad,telno,evadresi,isadresi,testtarihi,testdurumu,yas,cinsiyet,kronikhastalik):
+    def __init__(self, tckn,ad,soyad,telno,evadresi,isadresi,testtarihi,testdurumu,yas,cinsiyet,kronikhastalık):
         self.tckn = tckn
         self.ad = ad
         self.soyad = soyad
@@ -147,7 +147,7 @@ class OlasiVakalar(db.Model):
         self.yas = yas
         self.cinsiyet = cinsiyet
 
-        self.kronikhastalik = kronikhastalik
+        self.kronikhastalık = kronikhastalık
 
 class Vakalar(db.Model):
     __tablename__ = 'vakalar'
@@ -161,8 +161,8 @@ class Vakalar(db.Model):
 
 
 
-class Temas(db.Model):
-    __tablename__ = 'temaslilar'
+class Temaslilar(db.Model):
+    __tablename__ = 'temaslılar'
     temaslitckn = db.Column(db.String(13), primary_key=True)
     ad = db.Column(db.String(50))
     soyad = db.Column(db.String(50))
@@ -170,8 +170,7 @@ class Temas(db.Model):
     evadresi = db.Column(db.String(200))
     isadresi = db.Column(db.String(200))
 
-
-    def __init__(self, temaslitckn,ad,soyad,telno,evadresi,isadresi):
+    def __init__(self, temaslitckn, ad, soyad, telno, evadresi, isadresi):
         self.temaslitckn = temaslitckn
         self.ad = ad
         self.soyad = soyad
@@ -179,24 +178,25 @@ class Temas(db.Model):
         self.evadresi = evadresi
         self.isadresi = isadresi
 
-class Temaslilar(db.Model):
-    __tablename__ = 'temaslılar'
-    temaslitckn = db.Column(db.String(13),db.ForeignKey(Temas.temaslitckn) , primary_key=True)
-    tckn = db.Column(db.String(13), db.ForeignKey(Vakalar.tckn),primary_key=True)
+class Temas(db.Model):
+    __tablename__ = 'temas'
+    temaslitckn = db.Column(db.String(13), db.ForeignKey(
+        Temaslilar.temaslitckn), primary_key=True)
+    tckn = db.Column(db.String(13), db.ForeignKey(
+        Vakalar.tckn), primary_key=True)
     temasyeri = db.Column(db.String(50))
     temastarihi = db.Column(db.DateTime)
     temasliisim = db.Column(db.String(50))
     temaslisoyisim = db.Column(db.String(50))
 
-
-
-    def __init__(self, temaslitckn,tckn,temasyeri,temastarihi,temasliisim,temaslisoyisim):
+    def __init__(self, temaslitckn, tckn, temasyeri, temastarihi, temasliisim, temaslisoyisim):
         self.temaslitckn = temaslitckn
         self.tckn = tckn
         self.temasyeri = temasyeri
         self.temastarihi = temastarihi
         self.temasliisim = temasliisim
         self.temaslisoyisim = temaslisoyisim
+
 
 
 class IlacListesi(db.Model):

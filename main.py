@@ -168,3 +168,175 @@ def yeni_olasi_vaka():
 
 
 
+@main.route('/vaka/ekle', methods=["GET"])
+@login_required
+def ekle_vaka():
+
+    pozitif_vakalar = db.session.query(OlasiVakalar).filter(
+        OlasiVakalar.testdurumu == 1).all()
+
+
+    return render_template('ekle_vaka.html', vaka=pozitif_vakalar)
+
+
+@main.route('/vaka/ekle/<ekle>', methods=["POST", "GET"])
+@login_required
+def ekle_vaka2(ekle):
+
+    hasta = db.session.query(OlasiVakalar).filter(
+        OlasiVakalar.tckn == ekle).one()
+
+    tc = current_user.username
+
+    calisan = db.session.query(Calisanlar).filter(
+        Calisanlar.tckn == tc).one()
+
+    il = db.session.query(Il).filter(
+        Il.plakano == calisan.plakano
+    ).one()
+    il.hastasayisi = il.hastasayisi + 1
+
+    ilce = db.session.query(Ilce).filter(
+        Ilce.postakodu == calisan.postakodu and
+        Ilce.plakano == calisan.plakano
+    ).one()
+    ilce.hastasayisi = ilce.hastasayisi + 1
+
+    hastane = db.session.query(Hastane).filter(
+        Hastane.hastaneno == calisan.hastaneno and
+        Hastane.postakodu == calisan.postakodu and
+        Hastane.plakano == calisan.plakano
+        ).one()
+    hastane.hastasayisi = hastane.hastasayisi +1
+
+
+
+
+
+    vaka = Vakalar(hasta.tckn,0,None)
+
+    hasta.testdurumu=-2
+
+    db.session.add(vaka)
+    db.session.commit()
+    db.session.add(hasta)
+    db.session.commit()
+
+    return redirect(url_for('main.ekle_vaka'))
+
+
+@main.route('/vaka/guncelle', methods=["GET"])
+@login_required
+def guncelle_vaka():
+    vakalar = db.session.query(Vakalar).filter(
+        Vakalar.durum == 0).all()
+
+
+    return render_template('guncelle_vaka.html', vaka=vakalar)
+
+@main.route('/vaka/guncelle/<tckn>/<durum>', methods=["POST", "GET"])
+@login_required
+def guncelle_vaka2(tckn,durum):
+    tc = current_user.username
+
+    calisan = db.session.query(Calisanlar).filter(
+        Calisanlar.tckn == tc).one()
+
+    if durum == '1':
+       vaka=  db.session.query(Vakalar).filter(
+            Vakalar.tckn == tckn).one()
+       db.session.delete(vaka)
+       db.session.commit()
+
+    elif durum == '-1':
+        vaka = db.session.query(Vakalar).filter(
+            Vakalar.tckn == tckn).one()
+        vaka.durum = -1
+        db.session.add(vaka)
+        db.session.commit()
+
+        il = db.session.query(Il).filter(
+            Il.plakano == calisan.plakano
+        ).one()
+        il.olusayisi = il.olusayisi + 1
+        db.session.add(il)
+        db.session.commit()
+
+        ilce = db.session.query(Ilce).filter(
+            Ilce.postakodu == calisan.postakodu and
+            Ilce.plakano == calisan.plakano
+        ).one()
+        ilce.olusayisi = ilce.olusayisi + 1
+        db.session.add(ilce)
+        db.session.commit()
+
+        hastane = db.session.query(Hastane).filter(
+            Hastane.hastaneno == calisan.hastaneno and
+            Hastane.postakodu == calisan.postakodu and
+            Hastane.plakano == calisan.plakano
+        ).one()
+        hastane.olumsayisi = hastane.olumsayisi + 1
+        db.session.add(hastane)
+        db.session.commit()
+
+    il = db.session.query(Il).filter(
+        Il.plakano == calisan.plakano
+    ).one()
+    il.hastasayisi = il.hastasayisi - 1
+    db.session.add(il)
+    db.session.commit()
+
+    ilce = db.session.query(Ilce).filter(
+        Ilce.postakodu == calisan.postakodu and
+        Ilce.plakano == calisan.plakano
+    ).one()
+    ilce.hastasayisi = ilce.hastasayisi - 1
+    db.session.add(ilce)
+    db.session.commit()
+
+    hastane = db.session.query(Hastane).filter(
+        Hastane.hastaneno == calisan.hastaneno and
+        Hastane.postakodu == calisan.postakodu and
+        Hastane.plakano == calisan.plakano
+    ).one()
+    hastane.hastasayisi = hastane.hastasayisi - 1
+    db.session.add(hastane)
+    db.session.commit()
+
+
+    return redirect(url_for('main.guncelle_vaka'))
+
+
+@main.route('/temasli/ekle', methods=["GET"])
+@login_required
+def ekle_temasli():
+    vakalar = db.session.query(Vakalar).filter(
+        Vakalar.durum == 0).all()
+
+
+    return render_template('ekle_temasli.html', vaka=vakalar)
+
+@main.route('/temasli/ekle', methods=['POST'])
+@login_required
+def ekle_temasli_post():
+
+    tckn = request.form.get('tckn')
+    ttckn = request.form.get('ttckn')
+    ad = request.form.get('tad')
+    soyad = request.form.get('tsoyad')
+    telno = request.form.get('ttno')
+    ev = request.form.get('tev')
+    isy = request.form.get('tis')
+    tarih = request.form.get('ttarih')
+    yer = request.form.get('tyer')
+
+    ttarih = date(*map(int, tarih.split('-')))
+    yeni_temasli = Temaslilar(ttckn,ad,soyad,telno,ev,isy)
+    yeni_temas = Temas(ttckn,tckn,yer,ttarih,ad,soyad)
+    db.session.add(yeni_temasli)
+    db.session.commit()
+    db.session.add(yeni_temas)
+    db.session.commit()
+
+
+    return redirect(url_for('main.ekle_temasli'))

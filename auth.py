@@ -3,6 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, login_required
 from .model import *
 from __init__ import db
+from sqlalchemy import func
 from datetime import datetime
 import random
 
@@ -33,6 +34,7 @@ def login_post():
 @auth.route('/signup')
 def signup():
     return render_template('signup.html')
+
 
 @auth.route('/signup', methods=['POST'])
 def signup_post():
@@ -69,6 +71,25 @@ def signup_post():
     if doktor == '1':
         new_calisan = Calisanlar(tckn=tckn, password=password, plakano=plakano,
                               hastaneno=hastaneno, ad=ad, soyad=soyad, telno=telno, postakodu=pkodu, tur=1)
+
+
+        il = db.session.query(Il).filter(
+            Il.plakano == plakano).one()
+        il.doktorsayisi = Il.doktorsayisi + 1
+        db.session.add(il)
+        db.session.commit()
+        ilce = db.session.query(Ilce).filter(
+            Ilce.plakano == plakano and Ilce.postakodu == pkodu).one()
+        ilce.doktorsayisi = ilce.doktorsayisi + 1
+        db.session.add(ilce)
+        db.session.commit()
+        hastane = db.session.query(Hastane).filter(
+            Hastane.hastaneno == hastaneno and Hastane.plakano == plakano and Hastane.postakodu == pkodu).one()
+        hastane.doktorsayisi = hastane.doktorsayisi + 1
+        db.session.add(hastane)
+        db.session.commit()
+
+
     elif hemsire == '2':
         new_calisan = Calisanlar(tckn=tckn, password=password, plakano=plakano,
                                  hastaneno=hastaneno, ad=ad, soyad=soyad, telno=telno, postakodu=pkodu, tur=2)
@@ -88,33 +109,3 @@ def signup_post():
 def logout():
     logout_user()
     return redirect(url_for('main.index'))
-
-@auth.route('/medicinelists')
-@login_required
-def medicinelists():
-    result=db.session.execute("SELECT * FROM ilaçlistesi")
-    data = result.fetchall()
-    return render_template('medicinelists.html', data=data)
-
-@auth.route('/medicinelists', methods=['POST'])
-@login_required
-def medicinelists_post():
-    tckn = request.form.get('tckn')
-    isim = request.form.get('vakaisim')
-    soyisim = request.form.get('vakasoyisim')
-
-    vaka = Vakalar.query.filter_by(tckn=tckn).first()
-
-    if not vaka:
-        flash('Bu TC Kimlik Numarasına sahip bir vaka yok, ilaç listesi oluşturulamaz.')
-        return redirect(url_for('auth.medicinelists'))
-
-    ilaclar= vaka.ilaclistesi
-    
-    for i in range (0, len(ilaclar)):
-        ilac= IlacListesi(tckn, isim, soyisim, ilaclar[i])
-        db.session.add(ilac)
-    
-    db.session.commit()
-
-    return redirect(url_for('auth.medicinelists'))
