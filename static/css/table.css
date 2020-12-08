@@ -32,6 +32,17 @@ table {
     vertical-align: middle;
 
   }
+  table tbody tr td form button{
+  background-color:#0892b4; 
+  border: none;
+  color: white;
+  padding: 10px 25px;
+  display: block;
+  margin: auto;
+  text-decoration: none;
+  font-size: 16px;  
+  border-radius:3em;
+  }
   table tbody tr {
     height: 48px;
     border-bottom: 1px solid #e3f1d5;
