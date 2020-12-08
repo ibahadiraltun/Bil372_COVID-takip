@@ -400,3 +400,12 @@ def ekle_temasli_post():
 
 
     return redirect(url_for('main.ekle_temasli'))
+
+@main.route('/temasli/izle', methods=["GET"])
+@login_required
+def izle_temasli():
+    temasli = db.session.query(Temaslilar).all()
+    print(temasli)
+
+
+    return render_template('izle_temasli.html', temas=temasli)

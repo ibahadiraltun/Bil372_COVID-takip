@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+    <div class="notification is-success">
+        {{ messages[0] }}
+    </div>
+{% endif %}
+{% endwith %}
+<div style="display:flex;">
+
+        <div style="width: 50%;">
+            <h3 style="color: rgb(202, 54, 8);">Vaka ile Temaslı Olan Kişiler</h3>
+        {% if submissions != [None] %}
+            <ul class="list-group">
+        {% for t in temas %}
+            <li class="list-group-item list-group-item-primary">
+               TCKN :  {{  t['temaslitckn']  }}
+               Ad : {{ t['ad']  }}
+                 Soyad:  {{  t['soyad'] }}
+            Telefon Numarası:  {{  t['telno'] }}
+            Ev Adresi:  {{  t['evadresi'] }}
+            İş Adresi:  {{  t['isadresi'] }}
+            </li>
+        </a>
+        {% endfor %}
+
+            </ul>
+        {% endif %}
+        </div>
+</div>
+
+{% endblock %}
