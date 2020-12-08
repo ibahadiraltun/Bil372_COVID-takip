@@ -28,10 +28,21 @@ def olasi_vakalar():
 
     return render_template('olasi_vakalar.html', cases = possible_cases)
 
-@main.route('/yeni_vaka', methods=['POST', 'GET'])
-def yeni_vaka():
-    print('ASDASD')
-    return render_template('index.html')
+@main.route('/yeni_olasi_vaka', methods=['POST', 'GET'])
+def yeni_olasi_vaka():
+    if request.method == 'POST':
+        form = request.form
+        print(form)
+        values = form.to_dict(flat = True)
+        print(values)
+        new_possible_case = OlasiVakalar(tckn = values['tckn'], ad = values['ad'], soyad = values['soyad'], 
+                                        telno = values['telno'], evadresi = values['evadresi'], isadresi = values['isadresi'], 
+                                        testtarihi = values['testtarihi'], testdurumu = int(values['testdurumu']),
+                                        yas = values['yas'], cinsiyet = values['cinsiyet'], kronikhastalik = bool(values['kronikhastalik']))
+        db.session.add(new_possible_case)
+        db.session.commit()
+        return redirect(url_for('main.olasi_vakalar'))
+    return render_template('yeni_olasi_vaka.html')
 
 
 
