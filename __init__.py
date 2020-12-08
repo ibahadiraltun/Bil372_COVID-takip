@@ -10,7 +10,7 @@ def create_app():
 
     app.config['SECRET_KEY'] = 'thisismysecretkeydonotstealit'
     # add your password
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:1042@localhost/coviddb'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://ibahadiraltun:@localhost/bil372-project'
 
     db.init_app(app)
 

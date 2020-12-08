@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+
+<form class="form-inline" style="margin-left:auto">
+    <a href="{{url_for('main.yeni_vaka')}}" class="btn btn-outline-success" style="margin-left:5px" > Yeni Olasi Vaka </a>
+</form>
+  
+<table class="table table-hover">
+    <thead>
+        <tr>
+        <th scope="col">TCKN</th>
+        <th scope="col">AD</th>
+        <th scope="col">SOYAD</th>
+        <th scope="col">TEST DURUMU</th>
+        <th scope="col">YAS</th>
+        <th scope="col">CINSIYET</th>
+        <th scope="col">KRONIK</th>
+        </tr>
+    </thead>
+    <tbody>
+        {%for case in cases%}
+            <tr>
+                <th scope="row"> {{case.tckn}}</th>
+                <td>{{case.ad}}</td>
+                <td>{{case.soyad}}</td>
+                <td>{{case.testdurumu}}</td>
+                <td>{{case.yas}}</td>
+                <td>{{case.cinsiyet}}</td>
+                <td>{{case.kronikhastalik}}</td>
+                <td>
+                    <a class="btn btn-outline-primary" > Update</a>
+                    <a class="btn btn-outline-danger" > Delete</a>
+                </td> 
+            </tr>
+        {%endfor%}
+    </tbody>
+</table>
+
+
+{% endblock %}
